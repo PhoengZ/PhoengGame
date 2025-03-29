@@ -8,7 +8,7 @@
             </NuxtLink>
         </div>
         <h2 class="text-6xl font-bold text-white w-full bg-black text-center py-5 overflow-y-hidden ">
-            MULCEE GAME</h2>
+            BARGAIN SOULS</h2>
         <div
             class="flex flex-row  justify-between bg-gradient-to-b px-30 py-6 gap-3 bg-[url('backgroundhome.png')] overflow-y-hidden z-10">
             <!-- Player Section (Moved to the left) -->
