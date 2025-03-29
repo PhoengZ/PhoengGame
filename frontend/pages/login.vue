@@ -9,8 +9,9 @@ const login = async () => {
       queryParams.append("username", name.value);
       queryParams.append("password", password.value);
       const response = await fetch(`http://localhost:3002/user/login?${queryParams.toString()}`);
-      const data = await response.json();
-      console.log(data)
+      const data = await response.json()
+      const cookie = useCookie('token')
+      cookie.value = data["username"]
     } catch (error) {
       console.error(error)
     }

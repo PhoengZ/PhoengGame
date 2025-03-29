@@ -36,6 +36,12 @@ export async function Register(req, res) {
     }
 }
 
+export async function getUser(req,res){
+    const {username} = req.query;
+    const found = await User.find({ username});
+    res.status(200).json(found);
+}
+
 export async function getTop(req, res) {
     const find = await User.find().sort({ point: -1 }).limit(5)
     res.status(200).json(find);
