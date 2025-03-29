@@ -12,7 +12,7 @@
             </div>
             <!-- Word Display -->
             <section>
-              <div class="bg-gray-800 text-white px-6 py-3 rounded-lg mb-6 text-3xl font-mono shadow-md">
+              <div class="bg-gray-800 text-white px-6 py-3 rounded-lg mb-6 text-3xl font-mono shadow-md text-center">
                 <span v-for="(char, index) in maskedWord" :key="index">
                     {{ char === '_' ? ' _ ' : char }}
                 </span>
@@ -92,8 +92,6 @@ function updateTime() {
 let word = ref('');
 let maskedWord = ref([]);
 let usedLetters= ref([]);
-let initialMaskedWord= ref([]);
-let usedword =  ref([]);
 let alphabet = ref(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']);
 let wrongLetter = ref(null);
 let showTip = ref(false);
@@ -110,7 +108,6 @@ async function test() {
     const letterCounts = {}; 
     const revealedIndexes = new Set();
 
-    // สร้าง letterCounts และเก็บตำแหน่งของแต่ละตัวอักษร
     const letterPositions = {};
     word.value.split('').forEach((char, index) => {
         letterCounts[char] = (letterCounts[char] || 0) + 1;
@@ -118,95 +115,34 @@ async function test() {
         letterPositions[char].push(index);
     });
 
-    // เลือกตัวอักษรแบบไม่ซ้ำกันโดยเน้นตัวที่มีหลายตำแหน่งก่อน
     const uniqueLetters = Object.keys(letterCounts).filter(c => letterCounts[c] > 1);
     const lettersToReveal = uniqueLetters.length >= numberOfRevealedLetters 
         ? uniqueLetters.sort(() => Math.random() - 0.5).slice(0, numberOfRevealedLetters)
         : Object.keys(letterCounts).sort(() => Math.random() - 0.5).slice(0, numberOfRevealedLetters);
 
-    // เพิ่มตำแหน่งของตัวอักษรที่เลือกเข้า `revealedIndexes`
     lettersToReveal.forEach(letter => {
         letterPositions[letter].forEach(index => revealedIndexes.add(index));
     });
-
-    // สร้าง maskedWord โดยใช้ข้อมูลที่สุ่มมา
     maskedWord.value = word.value.split('').map((char, index) =>
         revealedIndexes.has(index) ? char : '_'
     );
-
-    // เก็บตัวอักษรที่เปิดไปแล้ว
     usedLetters.value = Array.from(revealedIndexes).map(index => word.value[index]);
 }
 
-async function fetchWord() {
-    try {
-        const wordresponse = await fetch('http://localhost:3002/word/randomword');
-        const wordData = await wordresponse.json();
-        word.value = wordData.word.toUpperCase();
-        tipText = wordData.meaning;
-        // กำหนดจำนวนตัวอักษรที่จะเปิดเผย (เช่น เปิดเผย 3 ตัว)
-        const numberOfRevealedLetters = 3;
-        // สุ่มเลือกตำแหน่งของตัวอักษรที่จะเปิด
-        const revealedIndexes = new Set();
-        const letterCounts = {}; // ใช้ในการเก็บจำนวนการเกิดขึ้นของแต่ละตัวอักษร
-        // นับจำนวนตัวอักษรที่ซ้ำกัน
-        word.value.split('').forEach(char => {
-            letterCounts[char] = (letterCounts[char] || 0) + 1;
-        });
-        // สุ่มเลือกตัวอักษรเพื่อเปิด
-        while (revealedIndexes.size < numberOfRevealedLetters) {
-            const randomIndex = Math.floor(Math.random() * word.value.length);
-            const charAtRandomIndex = word.value[randomIndex];
-            // เช็คว่าตัวอักษรนั้นซ้ำเกินไปหรือไม่
-            if (letterCounts[charAtRandomIndex] > 1 && !revealedIndexes.has(randomIndex)) {
-                revealedIndexes.add(randomIndex);
-            }
-        }
-        // สร้าง maskedWord โดยให้บางตำแหน่งเป็นตัวจริงและที่เหลือเป็น '_'
-        maskedWord.value = word.value.split('').map((char, index) =>
-            revealedIndexes.has(index) ? char : '_'
-        );
-        // รีเซ็ตตัวอักษรที่เคยเลือก
-        usedLetters.value = [];
-        revealedIndexes.forEach(index => {
-            usedLetters.value.push(word.value[index]); // เพิ่มตัวอักษรที่เปิดไปแล้วใน usedLetters
-        });
-        // ตรวจสอบว่าตัวอักษรที่เปิดมีอยู่ที่ตำแหน่งอื่นหรือไม่
-        revealedIndexes.forEach(index => {
-            const letter = word.value[index];
-            word.value.split('').forEach((char, i) => {
-                if (char === letter && i !== index && !revealedIndexes.has(i)) {
-                    revealedIndexes.add(i); // เพิ่มตำแหน่งที่มีตัวอักษรเดียวกัน
-                    usedLetters.value.push(letter); // เพิ่มตัวอักษรที่เปิดไปแล้วใน usedLetters
-                }
-            });
-        });
-        // อัปเดต maskedWord ให้แสดงผลทุกตำแหน่งที่พบตัวอักษรเดียวกัน
-        maskedWord.value = word.value.split('').map((char, index) =>
-            revealedIndexes.has(index) ? char : '_'
-        );
-    } catch (error) {
-        console.error('Error fetching word:', error);
-    }
-}
 async function selectLetter(letter) {
     if (word.value.includes(letter)) {
-        // เปิดเผยทุกตำแหน่งของตัวอักษรที่ถูกต้อง
         maskedWord.value = word.value.split('').map((char, index) =>
             (char === letter || maskedWord.value[index] !== '_') ? char : '_'
         )
-        // เช็คว่าคำทั้งหมดถูกเปิดหรือยัง
         if (!maskedWord.value.includes('_')) {
             setTimeout(() => {
                 nextWord();
             }, 1000);
         }
     } else {
-        // ถ้าตัวอักษรผิด ลด HP ผู้เล่น และทำให้ปุ่มสั่น
         wrongLetter.value = letter;
         setTimeout(() => (wrongLetter.value = null), 500);
     }
-    // เพิ่มตัวอักษรลงในรายการที่เลือกไปแล้ว
     usedLetters.value.push(letter);
 }
 async function nextWord() {
@@ -217,14 +153,13 @@ async function useTip() {
 }
 async function skipWord() {
     usedLetters.value = [];
-    await fetchWord();
+    await test();
 }
 onMounted(() => {
     updateTime(); // อัปเดตครั้งแรกทันที
     interval = setInterval(updateTime, 1000); // เริ่มจับเวลาเฉพาะฝั่งไคลเอนต์
 });
-// await fetchWord();
-//ตัวร้าย
+await skipWord();
 onUnmounted(() => {
     clearInterval(interval); // ล้าง interval เมื่อ component ถูกถอดออก
 });

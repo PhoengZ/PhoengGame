@@ -18,7 +18,6 @@ app.use('/user',public_user);
 app.use('/enemy',enemy_public);
 app.use('/item',item_public);
 app.use('/word',word_public);
-
 // async function startCountdownUpdates() {
 //     console.log("Starting countdown updates for all users...");
 
