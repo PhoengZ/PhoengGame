@@ -1,14 +1,17 @@
 <template>
-  <Login />
+  <Register />
 </template>
 
 
 <script>
-import Login from "./login.vue"; // Import component
+import Register from "./register.vue"; // Import component
 
 export default {
   components: {
-    Login, // Register component
+    Register, // Register component
   },
 };
+definePageMeta({
+  middleware: 'redirect',
+});
 </script>
