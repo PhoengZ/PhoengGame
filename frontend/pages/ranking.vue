@@ -1,7 +1,6 @@
 <script setup>
 import BaseBlockList from '~/components/BaseBlockList.vue';
 
-const queryParams = new URLSearchParams();
 const response = await fetch('http://localhost:3002/user/topscore');
 const data = await response.json()
 const arr = ref(['1','2','3','4']);
