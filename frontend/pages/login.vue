@@ -53,10 +53,10 @@ const validateForm = () => {
 <template>
   <div class=" bg-black relative">
 
-    <p class=" text-white top-0 right-3 fixed text-[40px] cursor-default">The Deep</p>
-    <form class="flex w-full h-screen justify-center max-w-[500px] flex-col mx-auto font-title "
+    <p class=" text-white top-0 right-3 fixed text-[20px] cursor-default md:text-[40px]">The Deep</p>
+    <form class="flex w-full h-screen justify-center max-w-[500px] flex-col mx-auto font-title p-3"
       @submit.prevent="login">
-      <p class=" text-[100px] mb-4 text-center font-doto text-white cursor-default">
+      <p class=" text-[50px] mb-4 text-center font-doto text-white cursor-default sm:text-[80px] md:text-[100px]">
         LOGIN
       </p>
       <input class=" border-white border-2 rounded-md outline-none p-4 w-full max-w-[500px] text-white" v-model="name"
@@ -68,10 +68,10 @@ const validateForm = () => {
       <p v-if="errors.login" class=" text-red-400">{{ errors.login }}</p>
       <div class="flex justify-center gap-4">
         <button
-          class=" bg-white rounded-md px-3 py-2 mt-[20px] w-[200px] hover:scale-90 transition-all cursor-pointer active:bg-gray-500"
+          class=" bg-white rounded-md px-3 py-2 mt-[20px] w-[200px] hover:scale-90 transition-all cursor-pointer active:bg-gray-500 drop-shadow-[0_0px_5px_rgba(255,255,255,1)]"
           type="submit">Login</button>
         <button
-          class=" bg-white rounded-md px-3 py-2 mt-[20px] w-[200px] hover:scale-90 transition-all cursor-pointer active:bg-gray-500"
+          class=" bg-white rounded-md px-3 py-2 mt-[20px] w-[200px] hover:scale-90 transition-all cursor-pointer active:bg-gray-500 drop-shadow-[0_0px_5px_rgba(255,255,255,1)]"
           type="button" @click="goToSignIn">Sign
           in</button>
       </div>
