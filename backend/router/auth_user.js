@@ -11,5 +11,6 @@ public_user.get('/getinventory',userController.getInventory);
 public_user.patch('/additem',userController.addInventory);
 public_user.patch('/removeitem',userController.removeItem);
 public_user.patch('/addtime',userController.addTime);
+public_user.patch('/destime',userController.desTime);
 
 export default public_user;

@@ -72,7 +72,23 @@ export async function addTime(req,res) {
     const {username} = req.query;
     let founded = await User.findOne({username});
     if (!founded)res.status(400).json({message:"Not found user!"});
-    founded.countdown_time = founded.countdown_time + 1;
-    await founded.save();
+    const newTime = new Date(founded.countdown_time.getTime() + 6 * 60 * 60 * 1000);
+    const updatedUser = await User.findOneAndUpdate(
+        { username },
+        { $set: { countdown_time: newTime } },
+        { new: true }
+    );
     res.status(200).json({message:"Successful adding time"});
+}
+export async function desTime(req,res){
+    const {username} = req.query;
+    let founded = await User.findOne({username});
+    if (!founded)res.status(400).json({message:"Not found user!"});
+    const newTime = new Date(founded.countdown_time.getTime() - 12 * 60 * 60 * 1000);
+    const updatedUser = await User.findOneAndUpdate(
+        { username },
+        { $set: { countdown_time: newTime } },
+        { new: true }
+    );
+    res.status(200).json({message:"Succesful Descreased time"});
 }

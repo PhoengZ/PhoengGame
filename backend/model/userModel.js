@@ -9,11 +9,11 @@ const itemSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    Rare:{
+    rare:{
         type:Number,
         required:true
     },
-    Url:{
+    url:{
         type:String,
         required:true
     }
