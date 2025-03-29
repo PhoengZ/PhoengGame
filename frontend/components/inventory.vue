@@ -51,7 +51,7 @@ const fetchData = async () => {
       <div
         class="flex bg-linear-to-r from-black/80 to-black/80 w-full rounded-md p-9 lg:flex-row flex-col h-[500px] lg:h-[400px] lg:justify-between lg:items-start items-center">
         <div class=" w-full max-w-[400px] rounded-tl-md rounded-bl-md flex flex-col items-center justify-center mb-4">
-          <img :src="selectItem.url"
+          <img :src="selectItem.url != null ? selectItem.url : '/temp.png'"
             class="w-[200px] h-[150px] lg:h-[200px] border-white border-[2px] rounded-md drop-shadow-[0_0px_5px_rgba(255,255,255,1)] object-cover">
           <div>
             <p class=" text-xl mt-6 mb-3 text-blue-500 text-center">{{ selectItem.itemName }}
