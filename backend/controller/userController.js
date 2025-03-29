@@ -40,7 +40,7 @@ export async function Register(req, res) {
 export async function getUser(req,res){
     const {username} = req.query;
     const found = await User.find({ username});
-    res.status(200).json(found);
+    res.status(200).json(found[0]);
 }
 
 export async function getTop(req, res) {
