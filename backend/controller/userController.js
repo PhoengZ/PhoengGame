@@ -1,5 +1,5 @@
 import User from "../model/userModel.js";
-
+import { getItem } from "./itemController.js";
 export async function Login(req, res) {
     const { username, password } = req.query;
     const found = await User.find({ username, password });
@@ -25,7 +25,8 @@ export async function Register(req, res) {
         password: password,
         point: 0,
         countdown_time: date,
-        health:100
+        health:100,
+        inventory:[]
     });
     try {
         await newUser.save();
@@ -44,8 +45,26 @@ export async function getTop(req, res) {
     res.status(200).json(find);
 }
 export async function getInventory(req,res){
-    
+    const {username} = req.query;
+    const user = await User.find({username})
+    if (user.length == 0)res.status(400).json({message:"User not found!"});
+    res.status(200).json(user[0].inventory);
 }
-export async function addInventory(){
-
+export async function addInventory(req,res){
+    const {username,itemName} = req.query;
+    let user = await User.find({username})
+    if (user.length == 0)res.status(400).json({message:"User not found!"});
+    const item = await getItem(itemName);
+    user[0].inventory.push(item);
+    await user[0].save();
+    res.status(200).json({message:"Success adding item!"})
+}
+export async function removeItem(req,res){
+    const {username,itemName} = req.query;
+    const user = await User.findOne({username});
+    if (!user)res.status(200).json({message:"User is not exist!"});
+    const newInventory = user.inventory.filter(item => item.itemName !== itemName);
+    user.inventory = newInventory;
+    await user.save();
+    res.status(200).json({message:"Success removing!"})
 }

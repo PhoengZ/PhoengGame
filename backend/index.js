@@ -4,6 +4,7 @@ import cors from "cors";
 import "./config/db.js";
 import public_user from "./router/auth_user.js";
 import enemy_public from "./router/enemy.js";
+import item_public from './router/item.js';
 import { updateCountdownForAllUsers } from "./controller/countdownController.js";
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(urlencoded({extended:true}));
 
 app.use('/user',public_user);
 app.use('/enemy',enemy_public);
+app.use('/item',item_public);
 
 // async function startCountdownUpdates() {
 //     console.log("Starting countdown updates for all users...");
@@ -24,7 +26,7 @@ app.use('/enemy',enemy_public);
 //     }, 1000);
 // }
 
-// // Initialize countdown on server startup
+// Initialize countdown on server startup
 // startCountdownUpdates();
 
 const port = 3002;
