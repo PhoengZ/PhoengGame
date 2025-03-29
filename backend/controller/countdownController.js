@@ -14,7 +14,6 @@ async function updateCountdownForUser(user) {
         const remainingTimeInSeconds = Math.floor(timeLeft / 1000);
         console.log(`User ${user.username} - Time left: ${remainingTimeInSeconds} seconds`);
         const newCountdownTime = new Date(currentTime.getTime() + remainingTimeInSeconds * 1000);
-
         await User.updateOne(
             { _id: user._id },
             { $set: { countdown_time: newCountdownTime } } 

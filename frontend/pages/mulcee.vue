@@ -28,7 +28,6 @@
                   </button>
               </div>
 
-              <!-- Actions -->
               <div class="mt-6 flex space-x-4 justify-center">
                   <button @click="useTip"
                       class="shadow-[0_0_5px_rgba(255,255,255,0.2)] hover:shadow-[0_0_10px_rgba(255,255,255,0.3)] transition-all duration-300 px-4 py-2 bg-yellow-500 text-white rounded-lg  hover:scale-90 cursor-pointer">Tips</button>
