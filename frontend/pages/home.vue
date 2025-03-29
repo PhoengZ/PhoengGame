@@ -23,33 +23,37 @@ const fetchUserData = async () => {
 }
 
 let intervalId = null
+let timeIntervalId = null;
 
 onMounted(async () => {
   if (!token.value) {
     navigateTo('/login')
   } else {
     username.value = token.value
-    await fetchUserData() // Fetch iniziale
-    // Imposta l'intervallo per aggiornare i dati ogni secondo
+    await fetchUserData() 
     intervalId = setInterval(fetchUserData, 1000)
+    timeIntervalId = setInterval(() => {
+      date.value = new Date()
+    }, 1000)
   }
 })
 
 onUnmounted(() => {
-  // Pulisci l'intervallo quando il componente viene smontato
   if (intervalId) {
     clearInterval(intervalId)
   }
+  if (timeIntervalId) {
+    clearInterval(timeIntervalId)
+  }
 })
 
-// Nuova funzione logout
 const logout = () => {
   token.value = null
   navigateTo('/login')
 }
 
 const gameBox = ref({
-  text: 'Play Game',
+  text: 'PLAY GAME',
   image: backgroundImage
 });
 
@@ -65,7 +69,7 @@ const handleMouseOut = () => {
 
 </script>
 <template>
-  <div class="flex flex-col min-h-screen bg-black">
+  <div class="flex flex-col min-h-screen bg-black overflow-hidden">
     <section :class="[
       'w-full flex justify-between items-center px-5 transition-all duration-1000',
       'shadow-[0_8px_16px_-4px_rgba(0,0,0,1)] relative z-10',
@@ -94,7 +98,7 @@ const handleMouseOut = () => {
 
     <div class="flex-grow relative">
       <div class="absolute inset-0">
-        <img :src="gameBox.image" alt="Placeholder" class="w-full h-full object-cover" />
+        <img :src="gameBox.image" alt="Placeholder" class="w-full h-full object-cover animate-shake" />
         <div class="absolute inset-0 flex justify-center items-center">
           <button 
             @mouseover="handleMouseOver"
@@ -117,3 +121,16 @@ const handleMouseOut = () => {
     </section>
   </div>
 </template>
+
+<style>
+@keyframes shake {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(2px, 2px) rotate(0.5deg); }
+  50% { transform: translate(0, -2px) rotate(-0.5deg); }
+  75% { transform: translate(-2px, 2px) rotate(0.5deg); }
+}
+
+.animate-shake {
+  animation: shake 6s ease-in-out infinite;
+}
+</style>
