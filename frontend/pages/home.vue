@@ -1,21 +1,20 @@
-
+<script setup>
+const id = ref(1);
+const point = ref(5);
+const date = ref(new Date());
+</script>
 <template>
-  <div class=" m-7">
-    <div class=" flex w-full justify-between items-start">
-      <div class="text-[50px]">
-        <p>Rank 1</p>
-        <p>Point 50</p>
+  <div class=" flex justify-center flex-col">
+    <section class="w-full h-20 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 drop-shadow-xl flex justify-between items-center px-5">
+      <div class="text-white font-semibold">
+        <h1 class="text-2xl">Rank: {{ id }}</h1>
+        <h2 class="text-xl">Point: {{ point }}</h2>
       </div>
-      <div>
-        <p class="text-[100px]">01:23:52:10</p>
-        <div class="max-w-[500px] w-full h-[300px] bg-gray-400 rounded-md">
-        </div>
-        <div class="flex justify-center">
-          <button
-            class=" bg-gray-400 rounded-md px-3 py-2 mt-[20px] w-[200px] hover:scale-90 transition-all cursor-pointer active:bg-gray-500">เข้าสู่เกม</button>
-        </div>
+      <div class="text-white text-center">
+        <h1 class="text-xl">{{ date.toLocaleString() }}</h1>
+        <h2 class="text-md mt-2">Username</h2>
       </div>
-      <p class="text-[50px]">User Name</p>
-    </div>
+    </section>
   </div>
+  
 </template>
