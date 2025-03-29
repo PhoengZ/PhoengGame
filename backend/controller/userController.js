@@ -1,7 +1,7 @@
 import User from "../model/userModel.js";
 
 export async function Login(req,res) {
-    const {username,password} = req.body;
+    const {username,password} = req.query;
     const found = await User.find({username,password});
     console.log(found.length);
     if (found.length == 1){

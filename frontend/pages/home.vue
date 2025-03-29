@@ -16,5 +16,4 @@ const date = ref(new Date());
       </div>
     </section>
   </div>
-  
 </template>
