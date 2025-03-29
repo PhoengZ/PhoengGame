@@ -7,5 +7,8 @@ public_user.get('/login',userController.Login);
 public_user.post('/register',userController.Register);
 public_user.get('/topscore',userController.getTop);
 public_user.get('/getuser',userController.getUser);
+public_user.get('/getinventory',userController.getInventory);
+public_user.patch('/additem',userController.addInventory);
+public_user.patch('/removeitem',userController.removeItem);
 
 export default public_user;

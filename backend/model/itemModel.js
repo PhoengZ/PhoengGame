@@ -17,4 +17,4 @@ const itemSchema = new mongoose.Schema({
 
 const item = mongoose.model('item',itemSchema,'item');
 
-export default item
+export default item;
