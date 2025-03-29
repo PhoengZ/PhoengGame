@@ -107,7 +107,7 @@ const handleMouseOut = () => {
         <button @click="logout" class="bg-white text-black px-3 py-1 rounded font-bold
           shadow-[0_0_5px_rgba(255,255,255,0.2)] 
           hover:shadow-[0_0_10px_rgba(255,255,255,0.3)] 
-          transition-all duration-300 ho">
+          transition-all duration-300 hover:scale-90 cursor-pointer">
           Logout
         </button>
       </div>
