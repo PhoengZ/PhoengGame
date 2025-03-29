@@ -27,6 +27,7 @@ export async function Register(req, res) {
         password: password,
         point: 0,
         countdown_time: date,
+        health:100
     });
     try {
         await newUser.save();
