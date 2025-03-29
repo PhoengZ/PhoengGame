@@ -1,16 +1,19 @@
 module.export = {
-    content: [
-      './composables/**/*.{js,vue,ts}',
-      './components/**/*.{js,vue,ts}',
-      './layouts/**/*.vue',
-      './pages/**/*.vue',
-      './plugins/**/*.{js,ts}',
-      './nuxt.config.{js,ts}',
-      './app.vue',
-    ],
-    theme: {
-      extend: {},
+  content: [
+    './composables/**/*.{js,vue,ts}',
+    './components/**/*.{js,vue,ts}',
+    './layouts/**/*.vue',
+    './pages/**/*.vue',
+    './plugins/**/*.{js,ts}',
+    './nuxt.config.{js,ts}',
+    './app.vue',
+  ],
+  theme: {
+    extend: {
+      fontFamily: {
+        doto: ["Doto", "sans-serif"],
+      }
     },
-    plugins: [],
-  }
-  ;
+  },
+  plugins: [],
+};

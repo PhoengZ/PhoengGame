@@ -18,7 +18,7 @@ export async function Login(req, res) {
 export async function Register(req, res) {
     const { username, password } = req.body;
     const foundUsername = await User.find({ username: username });
-    if (foundUsername.length > 1) res.status(409).json({ message: "Username is already used" });
+    if (foundUsername.length == 1) res.status(409).json({ message: "Username is already used" });
     // console.log("Is in Register");
     let date = new Date();
     date.setDate(date.getDate() + 1);
