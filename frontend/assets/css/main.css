@@ -1,1 +1,11 @@
 @import "tailwindcss";
+@font-face {
+  font-family: "Doto";
+  src: url("@/assets/fonts/Doto-ExtraBold.ttf");
+  font-style: normal;
+}
+
+body {
+  font-family: "Doto", sans-serif;
+  font-weight: bolder;
+}
