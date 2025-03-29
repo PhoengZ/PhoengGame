@@ -15,17 +15,17 @@ app.use(urlencoded({extended:true}));
 app.use('/user',public_user);
 app.use('/enemy',enemy_public);
 
-async function startCountdownUpdates() {
-    console.log("Starting countdown updates for all users...");
+// async function startCountdownUpdates() {
+//     console.log("Starting countdown updates for all users...");
 
-    // Call the function to update countdown for all users
-    setInterval(() => {
-        updateCountdownForAllUsers(); // Update countdown for all users every 1 second
-    }, 1000);
-}
+//     // Call the function to update countdown for all users
+//     setInterval(() => {
+//         updateCountdownForAllUsers(); // Update countdown for all users every 1 second
+//     }, 1000);
+// }
 
-// Initialize countdown on server startup
-startCountdownUpdates();
+// // Initialize countdown on server startup
+// startCountdownUpdates();
 
 const port = 3002;
 
