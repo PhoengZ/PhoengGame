@@ -23,6 +23,11 @@ const goToRanking = () => {
   router.push("/ranking")
 }
 
+const handlePlayGame = () => {
+  const router = useRouter()
+  router.push('/mulcee')
+}
+
 const fetchUserData = async () => {
   try {
     const response = await fetch(`http://localhost:3002/user/getuser?username=${username.value}`)
@@ -46,9 +51,6 @@ onMounted(async () => {
     username.value = token.value
     await fetchUserData()
     intervalId = setInterval(fetchUserData, 1000)
-    timeIntervalId = setInterval(() => {
-      date.value = new Date()
-    }, 1000)
   }
 })
 
@@ -119,7 +121,7 @@ const handleMouseOut = () => {
         <div class="absolute inset-0 flex justify-center items-center">
           <button class="text-white mr-4 cursor-pointer hover:scale-90 transition-transform"
             @click="togglePopup">Backpack</button>
-          <button @mouseover="handleMouseOver" @mouseout="handleMouseOut" class="px-8 py-3 text-2xl font-bold text-black bg-white rounded-lg 
+          <button @mouseover="handleMouseOver" @mouseout="handleMouseOut" @click="handlePlayGame" class="px-8 py-3 cursor-pointer text-2xl font-bold text-black bg-white rounded-lg 
             shadow-[0_0_20px_rgba(255,255,255,0.5)] hover:shadow-[0_0_40px_rgba(255,255,255,0.6)] 
             transition-all duration-300 hover:bg-gray-100 transform hover:scale-105 z-20">
             {{ gameBox.text }}
