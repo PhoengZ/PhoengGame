@@ -6,7 +6,7 @@
       <div class="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-md w-2/4 mb-6">
         <img src="/picture/tiger.jpg" alt="Tiger" class="w-20 h-20 rounded-full border-4 border-gray-300" />
         <div class="flex-1">
-          <div class="text-xl font-semibold text-gray-800" id = "enemyName"></div>
+          <div class="text-xl font-semibold text-gray-800" >enemy</div>
           <div class="w-full bg-gray-300 h-3 rounded-full mt-2">
             <div class="h-full bg-red-500 rounded-full transition-all duration-500" :style="{ width: enemyData.health + '%' }"></div>
           </div>
@@ -44,7 +44,7 @@
       <!-- Player Section -->
       <div class="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-md w-2/4 mt-6">
         <div class="flex-1">
-          <div class="text-xl font-semibold text-gray-800" id = "playerName"></div>
+          <div class="text-xl font-semibold text-gray-800" >player</div>
           <div class="w-full bg-gray-300 h-3 rounded-full mt-2">
             <div class="h-full bg-green-500 rounded-full transition-all duration-500" :style="{ width: playerData.health + '%' }"></div>
           </div>
@@ -90,8 +90,6 @@
         wrongLetter: null,
         showTip: false,
         tipText: '',
-        playerName : playerData.name,
-        enemyName : enemyData.enemy
       };
     },
 
