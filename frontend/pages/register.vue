@@ -1,15 +1,76 @@
+<script setup>
+import { ref } from 'vue';
+const name = ref('');
+const password = ref('');
+const confirmPassword = ref('');
+const errors = ref({});
+
+const createUser = async () => {
+  let validate = validateForm();
+  if (validate) {
+    try {
+      const response = await fetch('http://localhost:3002/user/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: name.value,
+          password: password.value
+        })
+      })
+    } catch (error) {
+      console.error("Fetch data failed")
+    }
+  }
+}
+
+const validateForm = () => {
+  errors.value = {};
+  let check = true;
+
+  if (!name.value.trim()) {
+    errors.value.name = "Please enter your name."
+    check = false;
+  }
+  if (!password.value.trim()) {
+    errors.value.password = "Please enter your password."
+    check = false;
+  }
+  if (!confirmPassword.value.trim()) {
+    errors.value.confirmPassword = "Please enter your confirm password."
+    check = false;
+  }
+  if (password.value != confirmPassword.value) {
+    errors.value.confirmPassword = "Please enter the Confirm Password to match the Password."
+    check = false;
+  }
+
+  return check;
+}
+</script>
+
 <template>
   <div class="flex w-full h-screen justify-center items-center flex-col">
     <p class=" text-[100px] mb-4">
       Register
     </p>
-    <input class=" border-gray-400 border-2 rounded-md outline-none p-4 w-full max-w-[500px] mb-5"
-      placeholder="Username" />
-    <input class=" border-gray-400 border-2 rounded-md outline-none p-4 w-full max-w-[500px] mb-5"
-      placeholder="Password" />
-    <input class=" border-gray-400 border-2 rounded-md outline-none p-4 w-full max-w-[500px]"
-      placeholder="Confirm Password" />
-    <button
-      class=" bg-gray-400 rounded-md px-3 py-2 mt-[20px] w-[200px] hover:scale-90 transition-all cursor-pointer active:bg-gray-500">เข้าสู่เกม</button>
+    <form @submit.prevent="createUser" class="flex flex-col w-full max-w-[500px]">
+      <input class=" border-gray-400 border-2 rounded-md outline-none p-4 w-full max-w-[500px]" v-model="name"
+        placeholder="Username" />
+      <p v-if="errors.name" class=" text-red-400">{{ errors.name }}</p>
+      <input class=" border-gray-400 border-2 rounded-md outline-none p-4 w-full max-w-[500px] mt-5" v-model="password"
+        placeholder="Password" />
+      <p v-if="errors.password" class="text-red-400">{{ errors.password }}</p>
+      <input class=" border-gray-400 border-2 rounded-md outline-none p-4 w-full max-w-[500px] mt-5"
+        v-model="confirmPassword" placeholder="Confirm Password" />
+      <p v-if="errors.confirmPassword" class="text-red-400">{{ errors.confirmPassword }}</p>
+      <div class="flex justify-center">
+
+        <button
+          class=" bg-gray-400 rounded-md px-3 py-2 mt-[20px] w-[200px] hover:scale-90 transition-all cursor-pointer active:bg-gray-500"
+          @click="showName" type="submit">เข้าสู่เกม</button>
+      </div>
+    </form>
   </div>
 </template>
