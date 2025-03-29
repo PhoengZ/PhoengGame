@@ -12,6 +12,10 @@ const itemSchema = new mongoose.Schema({
     Rare:{
         type:Number,
         required:true
+    },
+    Url:{
+        type:String,
+        required:true
     }
 })
 
