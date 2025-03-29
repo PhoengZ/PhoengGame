@@ -120,79 +120,71 @@ export default {
         };
     },
 
-    // async created() {
-    //     await this.fetchWord();
-    // },
+    async created() {
+        await this.fetchWord();
+    },
     methods: {
-        // async fetchWord() {
-        //     try {
-        //         const response = await fetch('https://random-word-api.herokuapp.com/word?number=1');
-        //         const data = await response.json();
-        //         this.word = data[0].toUpperCase();
+        async fetchWord() {
+            try {
+                const wordresponse = await fetch('http://localhost:3002/word/randomword');
+                const wordData = await wordresponse.json();
+                this.word = wordData.word.toUpperCase();
+                this.tipText = wordData.meaning;
 
-        //         // กำหนดจำนวนตัวอักษรที่จะเปิดเผย (เช่น เปิดเผย 3 ตัว)
-        //         const numberOfRevealedLetters = 3;
+                // กำหนดจำนวนตัวอักษรที่จะเปิดเผย (เช่น เปิดเผย 3 ตัว)
+                const numberOfRevealedLetters = 3;
 
-        //         // สุ่มเลือกตำแหน่งของตัวอักษรที่จะเปิด
-        //         const revealedIndexes = new Set();
-        //         const letterCounts = {}; // ใช้ในการเก็บจำนวนการเกิดขึ้นของแต่ละตัวอักษร
+                // สุ่มเลือกตำแหน่งของตัวอักษรที่จะเปิด
+                const revealedIndexes = new Set();
+                const letterCounts = {}; // ใช้ในการเก็บจำนวนการเกิดขึ้นของแต่ละตัวอักษร
 
-        //         // นับจำนวนตัวอักษรที่ซ้ำกัน
-        //         this.word.split('').forEach(char => {
-        //             letterCounts[char] = (letterCounts[char] || 0) + 1;
-        //         });
+                // นับจำนวนตัวอักษรที่ซ้ำกัน
+                this.word.split('').forEach(char => {
+                    letterCounts[char] = (letterCounts[char] || 0) + 1;
+                });
 
-        //         // สุ่มเลือกตัวอักษรเพื่อเปิด
-        //         while (revealedIndexes.size < numberOfRevealedLetters) {
-        //             const randomIndex = Math.floor(Math.random() * this.word.length);
-        //             const charAtRandomIndex = this.word[randomIndex];
+                // สุ่มเลือกตัวอักษรเพื่อเปิด
+                while (revealedIndexes.size < numberOfRevealedLetters) {
+                    const randomIndex = Math.floor(Math.random() * this.word.length);
+                    const charAtRandomIndex = this.word[randomIndex];
 
-        //             // เช็คว่าตัวอักษรนั้นซ้ำเกินไปหรือไม่
-        //             if (letterCounts[charAtRandomIndex] > 1 && !revealedIndexes.has(randomIndex)) {
-        //                 revealedIndexes.add(randomIndex);
-        //             }
-        //         }
+                    // เช็คว่าตัวอักษรนั้นซ้ำเกินไปหรือไม่
+                    if (letterCounts[charAtRandomIndex] > 1 && !revealedIndexes.has(randomIndex)) {
+                        revealedIndexes.add(randomIndex);
+                    }
+                }
 
-        //         // สร้าง maskedWord โดยให้บางตำแหน่งเป็นตัวจริงและที่เหลือเป็น '_'
-        //         this.maskedWord = this.word.split('').map((char, index) =>
-        //             revealedIndexes.has(index) ? char : '_'
-        //         );
+                // สร้าง maskedWord โดยให้บางตำแหน่งเป็นตัวจริงและที่เหลือเป็น '_'
+                this.maskedWord = this.word.split('').map((char, index) =>
+                    revealedIndexes.has(index) ? char : '_'
+                );
 
-        //         // รีเซ็ตตัวอักษรที่เคยเลือก
-        //         this.usedLetters = [];
-        //         revealedIndexes.forEach(index => {
-        //             this.usedLetters.push(this.word[index]); // เพิ่มตัวอักษรที่เปิดไปแล้วใน usedLetters
-        //         });
+                // รีเซ็ตตัวอักษรที่เคยเลือก
+                this.usedLetters = [];
+                revealedIndexes.forEach(index => {
+                    this.usedLetters.push(this.word[index]); // เพิ่มตัวอักษรที่เปิดไปแล้วใน usedLetters
+                });
 
-        //         // ตรวจสอบว่าตัวอักษรที่เปิดมีอยู่ที่ตำแหน่งอื่นหรือไม่
-        //         revealedIndexes.forEach(index => {
-        //             const letter = this.word[index];
-        //             this.word.split('').forEach((char, i) => {
-        //                 if (char === letter && i !== index && !revealedIndexes.has(i)) {
-        //                     revealedIndexes.add(i); // เพิ่มตำแหน่งที่มีตัวอักษรเดียวกัน
-        //                     this.usedLetters.push(letter); // เพิ่มตัวอักษรที่เปิดไปแล้วใน usedLetters
-        //                 }
-        //             });
-        //         });
+                // ตรวจสอบว่าตัวอักษรที่เปิดมีอยู่ที่ตำแหน่งอื่นหรือไม่
+                revealedIndexes.forEach(index => {
+                    const letter = this.word[index];
+                    this.word.split('').forEach((char, i) => {
+                        if (char === letter && i !== index && !revealedIndexes.has(i)) {
+                            revealedIndexes.add(i); // เพิ่มตำแหน่งที่มีตัวอักษรเดียวกัน
+                            this.usedLetters.push(letter); // เพิ่มตัวอักษรที่เปิดไปแล้วใน usedLetters
+                        }
+                    });
+                });
 
-        //         // อัปเดต maskedWord ให้แสดงผลทุกตำแหน่งที่พบตัวอักษรเดียวกัน
-        //         this.maskedWord = this.word.split('').map((char, index) =>
-        //             revealedIndexes.has(index) ? char : '_'
-        //         );
+                // อัปเดต maskedWord ให้แสดงผลทุกตำแหน่งที่พบตัวอักษรเดียวกัน
+                this.maskedWord = this.word.split('').map((char, index) =>
+                    revealedIndexes.has(index) ? char : '_'
+                );
 
-        //     } catch (error) {
-        //         console.error('Error fetching word:', error);
-        //     }
-        // },
-        // async fetchTip() {
-        //     try {
-        //         const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${this.word.toLowerCase()}`);
-        //         const data = await response.json();
-        //         this.tipText = data[0]?.meanings[0]?.definitions[0]?.definition || 'No definition found';
-        //     } catch (error) {
-        //         this.tipText = 'Error fetching tip';
-        //     }
-        // },
+            } catch (error) {
+                console.error('Error fetching word:', error);
+            }
+        },
         selectLetter(letter) {
             if (this.word.includes(letter)) {
                 // เปิดเผยทุกตำแหน่งของตัวอักษรที่ถูกต้อง
@@ -221,7 +213,6 @@ export default {
             await this.fetchWord(); // ดึงคำศัพท์ใหม่
         },
         async useTip() {
-            await this.fetchTip();
             this.showTip = true;
             this.playerHp -= 10;
         },
