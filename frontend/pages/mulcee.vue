@@ -1,12 +1,13 @@
 <template>
-    <div class="flex flex-col items-center justify-center h-screen bg-gradient-to-b from-gray-200 to-gray-100 p-6">
-        <h2 class="text-3xl font-bold mb-6 text-gray-800">MULCEE GAME</h2>
+    <div class="flex flex-col items-center justify-center h-screen bg-gradient-to-b bg-black p-6">
+        <h2 class="text-6xl font-bold mb-6 text-white">MULCEE GAME</h2>
 
-        <!-- Enemy Section -->
-        <div class="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-md w-2/4 mb-6">
-            <img src="/picture/tiger.jpg" alt="Tiger" class="w-20 h-20 rounded-full border-4 border-gray-300" />
-            <div class="flex-1 relative overflow-hidden">
-                <div class="text-xl font-semibold text-gray-800">{{ en }}</div>
+        <!-- Player Section (Moved to the left) -->
+        <div class="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-md w-2/4 mb-6 self-start">
+            <img src="/picture/player.jpg" alt="Player" class="w-20 h-20 rounded-full border-4 border-gray-300" />
+            <div class="flex-1">
+                <div class="text-xl font-semibold text-gray-800">{{ user }}</div>
+                <div class="text-xl font-semibold text-gray-800">{{ time }}</div>
             </div>
         </div>
 
@@ -35,13 +36,12 @@
                 class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 shadow-md">Skip</button>
         </div>
 
-        <!-- Player Section -->
-        <div class="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-md w-2/4 mt-6">
-            <div class="flex-1">
-                <div class="text-xl font-semibold text-gray-800">{{ user }}</div>
-                <div class="text-xl font-semibold text-gray-800">{{ time }}</div>
+        <!-- Enemy Section (Moved to the right) -->
+        <div class="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-md w-2/4 mt-6 self-end">
+            <div class="flex-1 relative overflow-hidden">
+                <div class="text-xl font-semibold text-gray-800">{{ en }}</div>
             </div>
-            <img src="/picture/player.jpg" alt="Player" class="w-20 h-20 rounded-full border-4 border-gray-300" />
+            <img src="/picture/tiger.jpg" alt="Tiger" class="w-20 h-20 rounded-full border-4 border-gray-300" />
         </div>
 
         <!-- Tips Popup -->
@@ -121,79 +121,79 @@ export default {
         };
     },
 
-    async created() {
-        await this.fetchWord();
-    },
+    // async created() {
+    //     await this.fetchWord();
+    // },
     methods: {
-        async fetchWord() {
-            try {
-                const response = await fetch('https://random-word-api.herokuapp.com/word?number=1');
-                const data = await response.json();
-                this.word = data[0].toUpperCase();
+        // async fetchWord() {
+        //     try {
+        //         const response = await fetch('https://random-word-api.herokuapp.com/word?number=1');
+        //         const data = await response.json();
+        //         this.word = data[0].toUpperCase();
 
-                // กำหนดจำนวนตัวอักษรที่จะเปิดเผย (เช่น เปิดเผย 3 ตัว)
-                const numberOfRevealedLetters = 3;
+        //         // กำหนดจำนวนตัวอักษรที่จะเปิดเผย (เช่น เปิดเผย 3 ตัว)
+        //         const numberOfRevealedLetters = 3;
 
-                // สุ่มเลือกตำแหน่งของตัวอักษรที่จะเปิด
-                const revealedIndexes = new Set();
-                const letterCounts = {}; // ใช้ในการเก็บจำนวนการเกิดขึ้นของแต่ละตัวอักษร
+        //         // สุ่มเลือกตำแหน่งของตัวอักษรที่จะเปิด
+        //         const revealedIndexes = new Set();
+        //         const letterCounts = {}; // ใช้ในการเก็บจำนวนการเกิดขึ้นของแต่ละตัวอักษร
 
-                // นับจำนวนตัวอักษรที่ซ้ำกัน
-                this.word.split('').forEach(char => {
-                    letterCounts[char] = (letterCounts[char] || 0) + 1;
-                });
+        //         // นับจำนวนตัวอักษรที่ซ้ำกัน
+        //         this.word.split('').forEach(char => {
+        //             letterCounts[char] = (letterCounts[char] || 0) + 1;
+        //         });
 
-                // สุ่มเลือกตัวอักษรเพื่อเปิด
-                while (revealedIndexes.size < numberOfRevealedLetters) {
-                    const randomIndex = Math.floor(Math.random() * this.word.length);
-                    const charAtRandomIndex = this.word[randomIndex];
+        //         // สุ่มเลือกตัวอักษรเพื่อเปิด
+        //         while (revealedIndexes.size < numberOfRevealedLetters) {
+        //             const randomIndex = Math.floor(Math.random() * this.word.length);
+        //             const charAtRandomIndex = this.word[randomIndex];
 
-                    // เช็คว่าตัวอักษรนั้นซ้ำเกินไปหรือไม่
-                    if (letterCounts[charAtRandomIndex] > 1 && !revealedIndexes.has(randomIndex)) {
-                        revealedIndexes.add(randomIndex);
-                    }
-                }
+        //             // เช็คว่าตัวอักษรนั้นซ้ำเกินไปหรือไม่
+        //             if (letterCounts[charAtRandomIndex] > 1 && !revealedIndexes.has(randomIndex)) {
+        //                 revealedIndexes.add(randomIndex);
+        //             }
+        //         }
 
-                // สร้าง maskedWord โดยให้บางตำแหน่งเป็นตัวจริงและที่เหลือเป็น '_'
-                this.maskedWord = this.word.split('').map((char, index) =>
-                    revealedIndexes.has(index) ? char : '_'
-                );
+        //         // สร้าง maskedWord โดยให้บางตำแหน่งเป็นตัวจริงและที่เหลือเป็น '_'
+        //         this.maskedWord = this.word.split('').map((char, index) =>
+        //             revealedIndexes.has(index) ? char : '_'
+        //         );
 
-                // รีเซ็ตตัวอักษรที่เคยเลือก
-                this.usedLetters = [];
-                revealedIndexes.forEach(index => {
-                    this.usedLetters.push(this.word[index]); // เพิ่มตัวอักษรที่เปิดไปแล้วใน usedLetters
-                });
+        //         // รีเซ็ตตัวอักษรที่เคยเลือก
+        //         this.usedLetters = [];
+        //         revealedIndexes.forEach(index => {
+        //             this.usedLetters.push(this.word[index]); // เพิ่มตัวอักษรที่เปิดไปแล้วใน usedLetters
+        //         });
 
-                // ตรวจสอบว่าตัวอักษรที่เปิดมีอยู่ที่ตำแหน่งอื่นหรือไม่
-                revealedIndexes.forEach(index => {
-                    const letter = this.word[index];
-                    this.word.split('').forEach((char, i) => {
-                        if (char === letter && i !== index && !revealedIndexes.has(i)) {
-                            revealedIndexes.add(i); // เพิ่มตำแหน่งที่มีตัวอักษรเดียวกัน
-                            this.usedLetters.push(letter); // เพิ่มตัวอักษรที่เปิดไปแล้วใน usedLetters
-                        }
-                    });
-                });
+        //         // ตรวจสอบว่าตัวอักษรที่เปิดมีอยู่ที่ตำแหน่งอื่นหรือไม่
+        //         revealedIndexes.forEach(index => {
+        //             const letter = this.word[index];
+        //             this.word.split('').forEach((char, i) => {
+        //                 if (char === letter && i !== index && !revealedIndexes.has(i)) {
+        //                     revealedIndexes.add(i); // เพิ่มตำแหน่งที่มีตัวอักษรเดียวกัน
+        //                     this.usedLetters.push(letter); // เพิ่มตัวอักษรที่เปิดไปแล้วใน usedLetters
+        //                 }
+        //             });
+        //         });
 
-                // อัปเดต maskedWord ให้แสดงผลทุกตำแหน่งที่พบตัวอักษรเดียวกัน
-                this.maskedWord = this.word.split('').map((char, index) =>
-                    revealedIndexes.has(index) ? char : '_'
-                );
+        //         // อัปเดต maskedWord ให้แสดงผลทุกตำแหน่งที่พบตัวอักษรเดียวกัน
+        //         this.maskedWord = this.word.split('').map((char, index) =>
+        //             revealedIndexes.has(index) ? char : '_'
+        //         );
 
-            } catch (error) {
-                console.error('Error fetching word:', error);
-            }
-        },
-        async fetchTip() {
-            try {
-                const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${this.word.toLowerCase()}`);
-                const data = await response.json();
-                this.tipText = data[0]?.meanings[0]?.definitions[0]?.definition || 'No definition found';
-            } catch (error) {
-                this.tipText = 'Error fetching tip';
-            }
-        },
+        //     } catch (error) {
+        //         console.error('Error fetching word:', error);
+        //     }
+        // },
+        // async fetchTip() {
+        //     try {
+        //         const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${this.word.toLowerCase()}`);
+        //         const data = await response.json();
+        //         this.tipText = data[0]?.meanings[0]?.definitions[0]?.definition || 'No definition found';
+        //     } catch (error) {
+        //         this.tipText = 'Error fetching tip';
+        //     }
+        // },
         selectLetter(letter) {
             if (this.word.includes(letter)) {
                 // เปิดเผยทุกตำแหน่งของตัวอักษรที่ถูกต้อง
