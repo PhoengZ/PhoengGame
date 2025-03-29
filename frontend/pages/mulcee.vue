@@ -1,67 +1,80 @@
 <template>
-    
-    <div class=" fixed inset-0 overflow-hidden">
-        <h2 class="text-6xl font-bold text-white w-full bg-black text-center py-5">MULCEE GAME</h2>
-        <div class="flex flex-row  justify-between h-screen bg-gradient-to-b bg-black p-6 gap-3">
+
+    <div class="inset-0 overflow-y-hidden h-screen bg-black">
+        <div class="hover:scale-90 transition-transform absolute top-10 right-10 z-40">
+            <NuxtLink to="/home" class="bg-white text-black px-4 py-2 rounded font-bold
+          shadow-[0_0_5px_rgba(255,255,255,0.2)] transition-all duration-300 hover:scale-90">
+                Back to Home
+            </NuxtLink>
+        </div>
+        <h2 class="text-6xl font-bold text-white w-full bg-black text-center py-5 overflow-y-hidden ">
+            MULCEE GAME</h2>
+        <div
+            class="flex flex-row  justify-between bg-gradient-to-b px-30 py-6 gap-3 bg-[url('backgroundhome.png')] overflow-y-hidden z-10">
             <!-- Player Section (Moved to the left) -->
-            <div class="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-md w-40 h-8/12 mb-6 self-start flex-col">
-                <img src="/picture/player.jpg" alt="Player" class="w-20 h-20 rounded-full border-4 border-gray-300" />
-                <div class="flex-1">
-                    <div class="text-xl font-semibold text-gray-800">{{ user }}</div>
-                    <div class="text-xl font-semibold text-gray-800">{{ time }}</div>
+            <div
+                class=" flex items-center space-x-4  p-4 rounded-lg w-50 h-[400px] mb-6 self-start flex-col backdrop-blur-sm bg-[url('/raw.png')] bg-cover bg-center">
+                <div class="flex-1 relative">
+                    <div class="text-xl font-semibold text-white text-center">{{ user }}</div>
+                    <div
+                        class="absolute text-xl font-semibold text-white text-center -bottom-[20px] -right-[10px] z-50">
+                        {{
+                            time }}
+                    </div>
                 </div>
+
             </div>
             <!-- Word Display -->
             <section>
-              <div class="bg-gray-800 text-white px-6 py-3 rounded-lg mb-6 text-3xl font-mono shadow-md text-center">
-                <span v-for="(char, index) in maskedWord" :key="index">
-                    {{ char === '_' ? ' _ ' : char }}
-                </span>
-              </div>
+                <div class="bg-gray-800 text-white px-6 py-3 rounded-lg mb-6 text-3xl shadow-md text-center">
+                    <span v-for="(char, index) in maskedWord" :key="index" class="font-doto">
+                        {{ char === '_' ? ' _ ' : char }}
+                    </span>
+                </div>
 
-            <!-- Keyboard -->
-              <div class="grid grid-cols-6 gap-3">
-                  <button v-for="(letter, index) in alphabet" :key="index" @click="selectLetter(letter)"
-                      :disabled="usedLetters.includes(letter)" class="shadow-[0_0_5px_rgba(255,255,255,0.2)] hover:shadow-[0_0_10px_rgba(255,255,255,0.3)] transition-all duration-300 w-12 h-12 bg-gray-300 rounded-lg text-lg font-semibold
+                <!-- Keyboard -->
+                <div class="grid grid-cols-6 gap-3">
+                    <button v-for="(letter, index) in alphabet" :key="index" @click="selectLetter(letter)"
+                        :disabled="usedLetters.includes(letter)" class="shadow-[0_0_5px_rgba(255,255,255,0.2)] hover:shadow-[0_0_10px_rgba(255,255,255,0.3)] transition-all duration-300 w-12 h-12 bg-gray-300 rounded-lg text-lg font-semibold
                      hover:bg-gray-400 disabled:bg-gray-500 disabled:text-gray-600"
-                      :class="{ 'animate-shake': wrongLetter === letter }">
-                      {{ letter }}
-                  </button>
-              </div>
+                        :class="{ 'animate-shake': wrongLetter === letter }">
+                        {{ letter }}
+                    </button>
+                </div>
 
-              <div class="mt-6 flex space-x-4 justify-center">
-                  <button @click="useTip"
-                      class="shadow-[0_0_5px_rgba(255,255,255,0.2)] hover:shadow-[0_0_10px_rgba(255,255,255,0.3)] transition-all duration-300 px-4 py-2 bg-yellow-500 text-white rounded-lg  hover:scale-90 cursor-pointer">Tips</button>
-                  <button @click="test"
-                      class=" shadow-[0_0_5px_rgba(255,255,255,0.2)] hover:shadow-[0_0_10px_rgba(255,255,255,0.3)] transition-all duration-300 px-4 py-2 bg-red-500 text-white rounded-lg   hover:scale-90  cursor-pointer">Skip</button>
-              </div>
-              <div v-if="showTip" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                  <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-                      <h3 class="text-lg font-bold mb-2">Tip</h3>
-                      <p class="text-gray-700">{{ tipText }}</p>
-                      <button @click="showTip = false"
-                          class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">OK</button>
-                  </div>
-              </div>
-              <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center" v-if="showItem">
-                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-                      <h3 class="text-lg font-bold mb-2">Treasure</h3>
-                      <p class="text-gray-700">{{ treasure.itemName }}</p>
-                      <img :src="treasure.url" alt="" class=" w-6/12 h-6/12">
-                      <button @click="showItem = false"
-                          class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">OK</button>
-                  </div>
+                <div class="mt-6 flex space-x-4 justify-center">
+                    <button @click="useTip"
+                        class="shadow-[0_0_5px_rgba(255,255,255,0.2)] hover:shadow-[0_0_10px_rgba(255,255,255,0.3)] transition-all duration-300 px-4 py-2 bg-yellow-500 text-white rounded-lg  hover:scale-90 cursor-pointer">Tips</button>
+                    <button @click="test"
+                        class=" shadow-[0_0_5px_rgba(255,255,255,0.2)] hover:shadow-[0_0_10px_rgba(255,255,255,0.3)] transition-all duration-300 px-4 py-2 bg-red-500 text-white rounded-lg   hover:scale-90  cursor-pointer">Skip</button>
+                </div>
+                <div v-if="showTip" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                    <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                        <h3 class="text-lg font-bold mb-2">Tip</h3>
+                        <p class="text-gray-700">{{ tipText }}</p>
+                        <button @click="showTip = false"
+                            class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">OK</button>
+                    </div>
+                </div>
+                <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center" v-if="showItem">
+                    <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                        <h3 class="text-lg font-bold mb-2">Treasure</h3>
+                        <p class="text-gray-700">{{ treasure.itemName }}</p>
+                        <img :src="treasure.url" alt="" class=" w-6/12 h-6/12">
+                        <button @click="showItem = false"
+                            class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">OK</button>
+                    </div>
                 </div>
             </section>
-            <div class="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-md w-40 h-8/12 mb-6 self-start justify-self-end flex-col">
+            <div
+                class="flex items-center space-x-4 p-4 rounded-lg shadow-md w-50 h-[400px] mb-6 self-start justify-self-end flex-col backdrop-blur-sm bg-[url('/skull.png')] bg-cover bg-center">
                 <div class="flex-1 relative overflow-hidden">
-                    <div class="text-xl font-semibold text-gray-800">{{ en }}</div>
+                    <div class="text-xl font-semibold text-white">{{ en }}</div>
                 </div>
-                <img src="/picture/tiger.jpg" alt="Tiger" class="w-20 h-20 rounded-full border-4 border-gray-300" />
             </div>
         </div>
     </div>
-    
+
 </template>
 
 <script setup>
@@ -101,7 +114,7 @@ function updateTime() {
 
 let word = ref('');
 let maskedWord = ref([]);
-let usedLetters= ref([]);
+let usedLetters = ref([]);
 let alphabet = ref(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']);
 let wrongLetter = ref(null);
 let showTip = ref(false);
@@ -116,7 +129,7 @@ async function test() {
     tipText = wordData.meaning;
 
     const numberOfRevealedLetters = 3;
-    const letterCounts = {}; 
+    const letterCounts = {};
     const revealedIndexes = new Set();
 
     const letterPositions = {};
@@ -127,7 +140,7 @@ async function test() {
     });
 
     const uniqueLetters = Object.keys(letterCounts).filter(c => letterCounts[c] > 1);
-    const lettersToReveal = uniqueLetters.length >= numberOfRevealedLetters 
+    const lettersToReveal = uniqueLetters.length >= numberOfRevealedLetters
         ? uniqueLetters.sort(() => Math.random() - 0.5).slice(0, numberOfRevealedLetters)
         : Object.keys(letterCounts).sort(() => Math.random() - 0.5).slice(0, numberOfRevealedLetters);
 
