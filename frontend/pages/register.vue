@@ -69,10 +69,10 @@ const validateForm = () => {
           placeholder="Username" />
         <p v-if="errors.name" class=" text-red-400">{{ errors.name }}</p>
         <input class=" border-white border-2 rounded-md outline-none p-4 w-full max-w-[500px] mt-5 text-white"
-          v-model="password" placeholder="Password" />
+          type="password" v-model="password" placeholder="Password" />
         <p v-if="errors.password" class="text-red-400">{{ errors.password }}</p>
         <input class=" border-white border-2 rounded-md outline-none p-4 w-full max-w-[500px] mt-5 text-white"
-          v-model="confirmPassword" placeholder="Confirm Password" />
+          type="password" v-model="confirmPassword" placeholder="Confirm Password" />
         <p v-if="errors.confirmPassword" class="text-red-400">{{ errors.confirmPassword }}</p>
         <p v-if="errors.register" class="text-red-400">{{ errors.register }}</p>
         <div class="flex justify-center">
