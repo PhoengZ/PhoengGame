@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useCookie, useRuntimeConfig, navigateTo } from '#app'
+import backgroundImage from '~/assets/image/background.jpg'
 
 const token = useCookie('token')
 const username = ref(token.value || 'Guest')
@@ -47,59 +48,72 @@ const logout = () => {
   navigateTo('/login')
 }
 
-const boxes = ref([
-  { id: 1, text: 'Game 1', image: 'https://via.placeholder.com/300' },
-  { id: 2, text: 'Game 2', image: 'https://via.placeholder.com/300/FF0000' }
-]);
+const gameBox = ref({
+  text: 'Play Game',
+  image: backgroundImage
+});
 
-const currentIndex = ref(0);
+const isHovered = ref(false);
 
-const nextBox = () => {
-  currentIndex.value = (currentIndex.value + 1) % boxes.value.length;
-};
+const handleMouseOver = () => {
+  isHovered.value = true;
+}
 
-const prevBox = () => {
-  currentIndex.value = (currentIndex.value - 1 + boxes.value.length) % boxes.value.length;
-};
+const handleMouseOut = () => {
+  isHovered.value = false;
+}
+
 </script>
 <template>
-  <div class="flex justify-center flex-col">
-    <section class="w-full h-20 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 drop-shadow-xl flex justify-between items-center px-5">
+  <div class="flex flex-col min-h-screen bg-black">
+    <section :class="[
+      'w-full flex justify-between items-center px-5 transition-all duration-1000',
+      'shadow-[0_8px_16px_-4px_rgba(0,0,0,1)] relative z-10',
+      isHovered ? 'h-35' : 'h-20'
+    ]">
       <div class="text-white font-semibold">
         <h1 class="text-2xl">Rank: {{ id }}</h1>
         <h2 class="text-xl">Point: {{ point }}</h2>
       </div>
+
       <div class="text-white text-center">
         <h1 class="text-xl">{{ date.toLocaleString() }}</h1>
         <h2 class="text-md mt-2">{{ username }}</h2>
       </div>
-      <!-- Pulsante per il logout -->
+
       <div>
-        <button @click="logout" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Logout</button>
+        <button @click="logout" 
+          class="bg-white text-black px-3 py-1 rounded font-bold
+          shadow-[0_0_5px_rgba(255,255,255,0.2)] 
+          hover:shadow-[0_0_10px_rgba(255,255,255,0.3)] 
+          transition-all duration-300">
+          Logout
+        </button>
       </div>
     </section>
-    <div class="relative flex justify-center items-center h-[500px] w-[1000px] bg-gray-200 border-2 border-gray-400 rounded-md mx-auto mt-10 overflow-hidden">
-      <div
-        v-for="(box, index) in boxes"
-        :key="box.id"
-        class="absolute inset-0 transition-transform duration-500"
-        :style="{ transform: `translateX(${(index - currentIndex) * 100}%)` }"
-      >
-        <img :src="box.image" alt="Placeholder" class="absolute inset-0 w-full h-full object-cover rounded-md" />
-        <p class="text-black text-xl font-bold z-10 relative text-center mt-[220px]">{{ box.text }}</p>
+
+    <div class="flex-grow relative">
+      <div class="absolute inset-0">
+        <img :src="gameBox.image" alt="Placeholder" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 flex justify-center items-center">
+          <button 
+            @mouseover="handleMouseOver"
+            @mouseout="handleMouseOut"
+            class="px-8 py-3 text-2xl font-bold text-black bg-white rounded-lg 
+            shadow-[0_0_20px_rgba(255,255,255,0.5)] hover:shadow-[0_0_40px_rgba(255,255,255,0.6)] 
+            transition-all duration-300 hover:bg-gray-100 transform hover:scale-105 z-20">
+            {{ gameBox.text }}
+          </button>
+        </div>
       </div>
     </div>
-    <button
-      @click="prevBox"
-      class="absolute left-[calc(45%-550px)] top-[calc(50%+50px)] transform -translate-y-1/2 bg-gray-400 text-white px-4 py-2 rounded-full hover:bg-gray-500"
-    >
-      ←
-    </button>
-    <button
-      @click="nextBox"
-      class="absolute right-[calc(45%-550px)] top-[calc(50%+50px)] transform -translate-y-1/2 bg-gray-400 text-white px-4 py-2 rounded-full hover:bg-gray-500"
-    >
-      →
-    </button>
+
+    <section :class="[
+      'w-full flex justify-between items-center px-5 transition-all duration-800',
+      'shadow-[0_-8px_16px_-4px_rgba(0,0,0,1)] relative z-10',
+      isHovered ? 'h-35' : 'h-20'
+    ]">
+      <!-- Footer content -->
+    </section>
   </div>
 </template>

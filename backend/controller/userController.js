@@ -14,12 +14,10 @@ export async function Login(req, res) {
         res.status(404).json({ message: 'User not found' });
     }
 }
-
 export async function Register(req, res) {
     const { username, password } = req.body;
     const foundUsername = await User.find({ username: username });
     if (foundUsername.length == 1) res.status(409).json({ message: "Username is already used" });
-    // console.log("Is in Register");
     let date = new Date();
     date.setDate(date.getDate() + 1);
     const newUser = new User({
@@ -36,14 +34,18 @@ export async function Register(req, res) {
         res.status(400).json({ message: "Login faild, ", error });
     }
 }
-
 export async function getUser(req,res){
     const {username} = req.query;
     const found = await User.find({ username});
     res.status(200).json(found[0]);
 }
-
 export async function getTop(req, res) {
-    const find = await User.find().sort({ point: -1 }).limit(5)
+    const find = await User.find().sort({ point: -1 }).limit(10)
     res.status(200).json(find);
+}
+export async function getInventory(req,res){
+    
+}
+export async function addInventory(){
+
 }
