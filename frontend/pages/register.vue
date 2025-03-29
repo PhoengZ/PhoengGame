@@ -59,12 +59,13 @@ const validateForm = () => {
 
 <template>
   <div class="bg-black relative">
-    <p class=" text-white top-0 right-3 fixed text-[40px] cursor-default">The Deep</p>
+
+    <p class=" text-white top-0 right-3 fixed text-[20px] cursor-default md:text-[40px]">The Deep</p>
     <div class="flex w-full h-screen justify-center items-center flex-col">
-      <p class=" text-[100px] mb-4 text-white cursor-default">
+      <p class=" text-[50px] mb-4 text-white cursor-default md:text-[100px] sm:text-[80px]">
         REGISTER
       </p>
-      <form @submit.prevent="createUser" class="flex flex-col w-full max-w-[500px]">
+      <form @submit.prevent="createUser" class="flex flex-col w-full max-w-[500px] p-3">
         <input class=" border-white border-2 rounded-md outline-none p-4 w-full max-w-[500px] text-white" v-model="name"
           placeholder="Username" />
         <p v-if="errors.name" class=" text-red-400">{{ errors.name }}</p>
@@ -78,7 +79,7 @@ const validateForm = () => {
         <div class="flex justify-center">
 
           <button
-            class=" bg-white rounded-md px-3 py-2 mt-[20px] w-[200px] hover:scale-90 transition-all cursor-pointer active:bg-gray-500"
+            class=" bg-white rounded-md px-3 py-2 mt-[20px] w-[200px] hover:scale-90 transition-all cursor-pointer active:bg-gray-500 drop-shadow-[0_0px_5px_rgba(255,255,255,1)]"
             @click="showName" type="submit">Sign in</button>
         </div>
       </form>
