@@ -6,11 +6,12 @@ const login = async () => {
   if (validateForm()) {
     try {
       const queryParams = new URLSearchParams();
-      queryParams.append("username", name);
-      queryParams.append("password", password);
+      queryParams.append("username", name.value);
+      queryParams.append("password", password.value);
       const response = await fetch(`http://localhost:3002/user/login?${queryParams.toString()}`);
       const data = await response.json()
-      console.log(data)
+      const cookie = useCookie('token')
+      cookie.value = data["username"]
     } catch (error) {
       console.error(error)
     }
