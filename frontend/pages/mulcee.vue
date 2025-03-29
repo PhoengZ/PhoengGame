@@ -1,4 +1,5 @@
 <template>
+    
     <div class=" fixed inset-0 overflow-hidden">
         <h2 class="text-6xl font-bold text-white w-full bg-black text-center py-5">MULCEE GAME</h2>
         <div class="flex flex-row  justify-between h-screen bg-gradient-to-b bg-black p-6 gap-3">
@@ -42,6 +43,15 @@
                           class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">OK</button>
                   </div>
               </div>
+              <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center" v-if="showItem">
+                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                      <h3 class="text-lg font-bold mb-2">Treasure</h3>
+                      <p class="text-gray-700">{{ treasure.itemName }}</p>
+                      <img :src="treasure.url" alt="" class=" w-6/12 h-6/12">
+                      <button @click="showItem = false"
+                          class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">OK</button>
+                  </div>
+                </div>
             </section>
             <div class="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-md w-40 h-8/12 mb-6 self-start justify-self-end flex-col">
                 <div class="flex-1 relative overflow-hidden">
@@ -97,7 +107,8 @@ let wrongLetter = ref(null);
 let showTip = ref(false);
 let tipText = ref('');
 let interval = ref(null);
-
+let showItem = ref(false);
+let treasure = ref({});
 async function test() {
     const wordresponse = await fetch('http://localhost:3002/word/randomword');
     const wordData = await wordresponse.json();
@@ -146,6 +157,8 @@ async function selectLetter(letter) {
     usedLetters.value.push(letter);
 }
 async function nextWord() {
+    randomItem();
+    showItem.value = true;
     await test(); // ดึงคำศัพท์ใหม่
 }
 async function useTip() {
@@ -154,6 +167,11 @@ async function useTip() {
 async function skipWord() {
     usedLetters.value = [];
     await test();
+}
+async function randomItem() {
+    const item = await fetch('http://localhost:3002/item/randomitem');
+    const itemData = await item.json();
+    treasure.value = itemData;
 }
 onMounted(() => {
     updateTime(); // อัปเดตครั้งแรกทันที

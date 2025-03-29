@@ -68,3 +68,11 @@ export async function removeItem(req,res){
     await user.save();
     res.status(200).json({message:"Success removing!"})
 }
+export async function addTime(req,res) {
+    const {username} = req.query;
+    let founded = await User.findOne({username});
+    if (!founded)res.status(400).json({message:"Not found user!"});
+    founded.countdown_time = founded.countdown_time + 1;
+    await founded.save();
+    res.status(200).json({message:"Successful adding time"});
+}
