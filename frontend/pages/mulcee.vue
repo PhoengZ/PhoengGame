@@ -1,59 +1,58 @@
 <template>
-    <div class="flex flex-col items-center justify-center h-screen bg-gradient-to-b bg-black p-6">
-        <h2 class="text-6xl font-bold mb-6 text-white">MULCEE GAME</h2>
-
-        <!-- Player Section (Moved to the left) -->
-        <div class="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-md w-2/4 mb-6 self-start">
-            <img src="/picture/player.jpg" alt="Player" class="w-20 h-20 rounded-full border-4 border-gray-300" />
-            <div class="flex-1">
-                <div class="text-xl font-semibold text-gray-800">{{ user }}</div>
-                <div class="text-xl font-semibold text-gray-800">{{ time }}</div>
+    <div class=" fixed inset-0 overflow-hidden">
+        <h2 class="text-6xl font-bold text-white w-full bg-black text-center py-5">MULCEE GAME</h2>
+        <div class="flex flex-row  justify-between h-screen bg-gradient-to-b bg-black p-6 gap-3">
+            <!-- Player Section (Moved to the left) -->
+            <div class="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-md w-40 h-8/12 mb-6 self-start flex-col">
+                <img src="/picture/player.jpg" alt="Player" class="w-20 h-20 rounded-full border-4 border-gray-300" />
+                <div class="flex-1">
+                    <div class="text-xl font-semibold text-gray-800">{{ user }}</div>
+                    <div class="text-xl font-semibold text-gray-800">{{ time }}</div>
+                </div>
             </div>
-        </div>
+            <!-- Word Display -->
+            <section>
+              <div class="bg-gray-800 text-white px-6 py-3 rounded-lg mb-6 text-3xl font-mono shadow-md">
+                <span v-for="(char, index) in maskedWord" :key="index">
+                    {{ char === '_' ? ' _ ' : char }}
+                </span>
+              </div>
 
-        <!-- Word Display -->
-        <div class="bg-gray-800 text-white px-6 py-3 rounded-lg mb-6 text-3xl font-mono shadow-md">
-            <span v-for="(char, index) in maskedWord" :key="index">
-                {{ char === '_' ? ' _ ' : char }}
-            </span>
-        </div>
+            <!-- Keyboard -->
+              <div class="grid grid-cols-6 gap-3">
+                  <button v-for="(letter, index) in alphabet" :key="index" @click="selectLetter(letter)"
+                      :disabled="usedLetters.includes(letter)" class="shadow-[0_0_5px_rgba(255,255,255,0.2)] hover:shadow-[0_0_10px_rgba(255,255,255,0.3)] transition-all duration-300 w-12 h-12 bg-gray-300 rounded-lg text-lg font-semibold
+                     hover:bg-gray-400 disabled:bg-gray-500 disabled:text-gray-600"
+                      :class="{ 'animate-shake': wrongLetter === letter }">
+                      {{ letter }}
+                  </button>
+              </div>
 
-        <!-- Keyboard -->
-        <div class="grid grid-cols-6 gap-3">
-            <button v-for="(letter, index) in alphabet" :key="index" @click="selectLetter(letter)"
-                :disabled="usedLetters.includes(letter)" class="w-12 h-12 bg-gray-300 rounded-lg text-lg font-semibold
-               hover:bg-gray-400 disabled:bg-gray-500 disabled:text-gray-600 shadow-md"
-                :class="{ 'animate-shake': wrongLetter === letter }">
-                {{ letter }}
-            </button>
-        </div>
-
-        <!-- Actions -->
-        <div class="mt-6 flex space-x-4">
-            <button @click="useTip"
-                class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 shadow-md">Tips</button>
-            <button @click="skipWord"
-                class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 shadow-md">Skip</button>
-        </div>
-
-        <!-- Enemy Section (Moved to the right) -->
-        <div class="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-md w-2/4 mt-6 self-end">
-            <div class="flex-1 relative overflow-hidden">
-                <div class="text-xl font-semibold text-gray-800">{{ en }}</div>
-            </div>
-            <img src="/picture/tiger.jpg" alt="Tiger" class="w-20 h-20 rounded-full border-4 border-gray-300" />
-        </div>
-
-        <!-- Tips Popup -->
-        <div v-if="showTip" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-                <h3 class="text-lg font-bold mb-2">Tip</h3>
-                <p class="text-gray-700">{{ tipText }}</p>
-                <button @click="showTip = false"
-                    class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">OK</button>
+              <!-- Actions -->
+              <div class="mt-6 flex space-x-4 justify-center">
+                  <button @click="useTip"
+                      class="shadow-[0_0_5px_rgba(255,255,255,0.2)] hover:shadow-[0_0_10px_rgba(255,255,255,0.3)] transition-all duration-300 px-4 py-2 bg-yellow-500 text-white rounded-lg  hover:scale-90 cursor-pointer">Tips</button>
+                  <button @click="skipWord"
+                      class=" shadow-[0_0_5px_rgba(255,255,255,0.2)] hover:shadow-[0_0_10px_rgba(255,255,255,0.3)] transition-all duration-300 px-4 py-2 bg-red-500 text-white rounded-lg   hover:scale-90  cursor-pointer">Skip</button>
+              </div>
+              <div v-if="showTip" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                  <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                      <h3 class="text-lg font-bold mb-2">Tip</h3>
+                      <p class="text-gray-700">{{ tipText }}</p>
+                      <button @click="showTip = false"
+                          class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">OK</button>
+                  </div>
+              </div>
+            </section>
+            <div class="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-md w-40 h-8/12 mb-6 self-start justify-self-end flex-col">
+                <div class="flex-1 relative overflow-hidden">
+                    <div class="text-xl font-semibold text-gray-800">{{ en }}</div>
+                </div>
+                <img src="/picture/tiger.jpg" alt="Tiger" class="w-20 h-20 rounded-full border-4 border-gray-300" />
             </div>
         </div>
     </div>
+    
 </template>
 
 <script setup>
