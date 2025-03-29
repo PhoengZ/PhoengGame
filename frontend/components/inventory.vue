@@ -12,15 +12,16 @@ defineProps({
 
 let selectItem = ref({})
 
-const actionSelectItem = (targetItem) => {
+const actionSelectItem = (targetItem, haha) => {
   selectItem.value = targetItem
+  console.log(haha)
 }
 
 onMounted(() => {
   fetchData()
 })
 
-let items = ["aaaaa", "fsafsa", "lkjfafal", "fsl;kfja", "aaaaa", "fsafsa", "lkjfafal", "fsl;kfja", "aaaaa", "fsafsa", "lkjfafal", "fsl;kfja", "aaaaa", "fsafsa", "lkjfafal", "fsl;kfja", "aaaaa", "fsafsa", "lkjfafal", "fsl;kfja", "aaaaa", "fsafsa", "lkjfafal", "fsl;kfja", "aaaaa", "fsafsa", "lkjfafal", "fsl;kfja", "aaaaa", "fsafsa", "lkjfafal", "fsl;kfja", "aaaaa", "fsafsa", "lkjfafal", "fsl;kfja", "aaaaa", "fsafsa", "lkjfafal", "fsl;kfja", "aaaaa", "fsafsa", "lkjfafal", "fsl;kfja", "aaaaa", "fsafsa", "lkjfafal", "fsl;kfja"];
+let items = ref([]);
 const fetchData = async () => {
   const name = useCookie('token')
   const queryParams = new URLSearchParams();
@@ -28,7 +29,7 @@ const fetchData = async () => {
   const response = await fetch(`http://localhost:3002/user/getinventory?${queryParams.toString()}`);
   if (response.status < 400) {
     const data = await response.json()
-    items = data
+    items.value = data
     console.log(items)
   } else {
     throw new Error()
@@ -50,10 +51,8 @@ const fetchData = async () => {
       <div
         class="flex bg-linear-to-r from-black/80 to-black/80 w-full rounded-md p-9 lg:flex-row flex-col h-[500px] lg:h-[400px] lg:justify-between lg:items-start items-center">
         <div class=" w-full max-w-[400px] rounded-tl-md rounded-bl-md flex flex-col items-center justify-center mb-4">
-          <div
-            class="w-[200px] h-[150px] lg:h-[200px] border-white border-[2px] rounded-md drop-shadow-[0_0px_5px_rgba(255,255,255,1)] bg-cover bg-center "
-            :class="selectItem.url != null ? `bg-[url('${selectItem.url}')]` : ''">
-          </div>
+          <img :src="selectItem.url"
+            class="w-[200px] h-[150px] lg:h-[200px] border-white border-[2px] rounded-md drop-shadow-[0_0px_5px_rgba(255,255,255,1)] object-cover">
           <div>
             <p class=" text-xl mt-6 mb-3 text-blue-500 text-center">{{ selectItem.itemName }}
             </p>
@@ -62,11 +61,10 @@ const fetchData = async () => {
           </div>
         </div>
         <div
-          class=" grid grid-cols-[repeat(5,_50px)] grid-rows-[repeat(3,_50px)] sm:grid-cols-[repeat(5,_60px)] sm:grid-rows-[repeat(3,_60px)] lg:grid-cols-[repeat(5,_80px)] lg:grid-rows-[80px] max-w-[500px] gap-x-2 gap-y-2 rounded-tr-md rounded-br-md overflow-y-auto overflow-x-hidden  max-h-[325px]">
-          <div v-for="(item, index) in items" :key="index"
-            class=" border-white border-[2px] rounded-md cursor-pointer hover:scale-90 transition-transform lg:h-[80px] sm:h-[60px] h-[50px] bg-cover bg-center"
-            :class="item.url != null ? `bg-[url('${item.url}')]` : ''" @click="actionSelectItem(item)">
-          </div>
+          class=" grid grid-cols-[repeat(5,_50px)] grid-rows-[repeat(2,_50px)] sm:grid-cols-[repeat(5,_60px)] sm:grid-rows-[repeat(2,_60px)] lg:grid-cols-[repeat(5,_80px)] lg:grid-rows-[80px] max-w-[500px] gap-x-2 gap-y-2 rounded-tr-md rounded-br-md overflow-y-auto overflow-x-hidden  max-h-[325px]">
+
+          <img :src="item.url" v-for="(item, index) in items" :key="index" @click="actionSelectItem(item, item.url)"
+            class="  border-white border-[2px] rounded-md cursor-pointer hover:scale-90 transition-transform lg:h-[80px] sm:h-[60px] h-[50px]">
         </div>
       </div>
     </div>

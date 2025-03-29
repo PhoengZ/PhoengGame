@@ -3,7 +3,7 @@ import BaseBlockList from '~/components/BaseBlockList.vue';
 
 const response = await fetch('http://localhost:3002/user/topscore');
 const data = await response.json()
-const arr = ref(['1','2','3','4']);
+const arr = ref(['1', '2', '3', '4']);
 arr.value = data;
 
 const isHovered = ref(false);
@@ -28,12 +28,9 @@ const handleMouseOut = () => {
       <div class="text-white text-2xl font-bold">
         Ranking Board
       </div>
-      <div>
-        <NuxtLink to="/home" 
-          class="bg-white text-black px-4 py-2 rounded font-bold
-          shadow-[0_0_5px_rgba(255,255,255,0.2)] 
-          hover:shadow-[0_0_10px_rgba(255,255,255,0.3)] 
-          transition-all duration-300">
+      <div class="hover:scale-90 transition-transform">
+        <NuxtLink to="/home" class="bg-white text-black px-4 py-2 rounded font-bold
+          shadow-[0_0_5px_rgba(255,255,255,0.2)] transition-all duration-300 hover:scale-90">
           Back to Home
         </NuxtLink>
       </div>
@@ -41,7 +38,7 @@ const handleMouseOut = () => {
 
     <!-- Main Content -->
     <div class="flex-grow h-[calc(100vh-10rem)]">
-      <BaseBlockList :items="arr"/>
+      <BaseBlockList :items="arr" />
     </div>
 
     <!-- Footer Section -->
